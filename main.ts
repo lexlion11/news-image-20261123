@@ -9,5 +9,10 @@ const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
 const dest = join(outDir, 'entry.png');
 
 if (!existsSync(outDir)) mkdirSync(outDir, { recursive: true });
-copyFileSync(new URL('entry.png', import.meta.url), dest);
+
+const src = new URL('entry.png', import.meta.url);
+if (!existsSync(src)) {
+  throw new Error(`source image not found: ${src.pathname}`);
+}
+copyFileSync(src, dest);
 console.log(`wrote ${dest}`);
